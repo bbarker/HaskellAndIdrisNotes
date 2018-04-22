@@ -8,6 +8,9 @@ former, we will likely not see very much due to this being a book on Haskell,
 but the differences should still be instructive. I may also comment on Scala, 
 as it is the FP language I’m most familiar with.
 
+
+## Basic REPL and syntax differences
+
 I'll be using the Haskell REPL `ghci` and the Idris REPL `idris`. In `idris`,
 it is important to note that to declare things **in the REPL**, you have to
 prefix the declaration with `:let`, like:
@@ -27,29 +30,29 @@ data Color              = Red | Green | Blue | Indigo | Violet
 ```
 
 Notably, Haskell doesn't need `let` for data declarations, whereas the Idris Repl does. Idris
-also uses `Nat` out of the box, which as might be expected, does not allow negative values:
+also uses `Nat` where possible, which as might be expected, does not allow negative values:
 
 ```idris
-let {x :: Int; x = 5} 
+:let xneg : Nat; xneg = 5
 ```
 
-yields the type error `Can't find implementation for Neg Nat`. As expected, there is no problem
-defining this with an `Int` in Haskell:
+yields the type error `Can't find implementation for Neg Nat`; just use `Int` instead of `Nat`.
+In Haskell this would be:
 
 ```haskell
 let {xneg :: Int; xneg = -5}
 ```
-
-Actually getting Integers to work in Idris seems to be a bit of an 
-[ordeal](https://stackoverflow.com/questions/48345416/type-of-nonzero-integers-in-idris) that I will 
-need to come back to later.
 
 Conversely, using such refined types 
 [in Haskell](https://hackage.haskell.org/package/natural-numbers-0.1.2.0/docs/Data-Natural.html)
 (and in [Scala](https://github.com/fthomas/refined)) appears to be possible only through libraries,
 and is still a bit unwieldly compared to Idris.
 
-So point for Idris in terms of flexibility and Haskell/Scala in terms of user friendliness. 
+So a point for Idris in terms of flexibility and Haskell/Scala in terms of user friendliness (for now).
+
+Another difference in the `ghci` and `idris` is that `ghci` (like Scala REPLs) let you redefine an
+existing value; Idris does not. There are pros and cons to both approaches: usability of the former,
+[safety](https://github.com/idris-lang/Idris-dev/issues/3733) in the latter.
 
 # Introduction
 
@@ -67,7 +70,7 @@ and are monomorphic. I don't know if any language has the advantage here:
 the entire reason Scala has this dichotomy between methods and functions
 is precisely because it is an OO and functional language, functions are represented
 as objects, and it doesnt't really make sense to talk about polymorphic objects.
-You should always be able to use a method in Scala, e.g., a so called "static method"
+You should always be able to use a method in Scala, e.g, a so called "static method"
 in Java would suffice for a function that would need to appear objectless.
 
 While Haskell uses the Hindley-Milner type system, allowing a specific kind of
