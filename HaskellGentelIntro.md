@@ -17,3 +17,10 @@ Nothing to be said for this section
 `head []` gives a runtime Exception in Haskell, but a type error in Idris 
 (`Can't find a value of type NonEmpty []`). Point for Idris, here, I think.
 
+When considering polymorphism, it would seem that functions in Haskell (and Idris)
+will basically behave as methods in Scala. However, functions in Scala are a
+[different matter](http://milessabin.com/blog/2012/04/27/shapeless-polymorphic-function-values-1/#methods-vs-function-values),
+and are monomorphic. So, this is a slight advantage for Idris and Haskell over
+Scala, but the entire reason Scala has this dichotomy between methods and functions
+is precisely because it is an OO and functional language, functions are represented
+as objects, and it doesnt't really make sense to talk about polymorphic objects.
