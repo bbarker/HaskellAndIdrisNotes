@@ -14,8 +14,42 @@ prefix the declaration with `:let`, like:
 
 ```idris
 :let x: Nat; x = 5
+:let y = 42
 :let data Color              = Red | Green | Blue | Indigo | Violet
 ```
+
+In Haskell, this would be:
+
+```haskell
+let {x :: Int; x = 5} 
+let y = 42
+data Color              = Red | Green | Blue | Indigo | Violet
+```
+
+Notably, Haskell doesn't need `let` for data declarations, whereas the Idris Repl does. Idris
+also uses `Nat` out of the box, which as might be expected, does not allow negative values:
+
+```idris
+let {x :: Int; x = 5} 
+```
+
+yields the type error `Can't find implementation for Neg Nat`. As expected, there is no problem
+defining this with an `Int` in Haskell:
+
+```haskell
+let {xneg :: Int; xneg = -5}
+```
+
+Actually getting Integers to work in Idris seems to be a bit of an 
+[ordeal](https://stackoverflow.com/questions/48345416/type-of-nonzero-integers-in-idris) that I will 
+need to come back to later.
+
+Conversely, using such refined types 
+[in Haskell](https://hackage.haskell.org/package/natural-numbers-0.1.2.0/docs/Data-Natural.html)
+(and in [Scala](https://github.com/fthomas/refined)) appears to be possible only through libraries,
+and is still a bit unwieldly compared to Idris.
+
+So point for Idris in terms of flexibility and Haskell/Scala in terms of user friendliness. 
 
 # Introduction
 
