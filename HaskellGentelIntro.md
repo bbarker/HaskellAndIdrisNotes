@@ -41,6 +41,6 @@ type inference that allows for the notion of a principal type (a most spcefic ty
 I believe Scala and Idris also have a notion of a most principal type that can generally
 be inferred, but due to Idris using [dependent types](https://cs.stackexchange.com/questions/12691/what-makes-type-inference-for-dependent-types-undecidable) 
 and Scala also using a limited form of them and recently (Scala 3/dotty) being based on 
-System F, as well as having subclassing, I imagine they must go beyind HM and play 
+System F, as well as having subclassing, I imagine they must go beyond HM and play 
 [some tricks](https://www.scala-lang.org/old/node/4654), but I'm getting a bit far afield 
 here. 
