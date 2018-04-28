@@ -18,7 +18,7 @@ prefix the declaration with `:let`, like:
 ```idris
 :let x: Nat; x = 5
 :let y = 42
-:let data Color              = Red | Green | Blue | Indigo | Violet
+:let data Color         = Red | Green | Blue | Indigo | Violet
 ```
 
 In Haskell, this would be:
