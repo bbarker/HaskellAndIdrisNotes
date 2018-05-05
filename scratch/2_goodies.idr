@@ -1,6 +1,6 @@
 module Main
 main: IO ()
-main = pure ()
+-- main = pure ()
 
 -- Need to figure out hide
 -- %hide Point
@@ -22,3 +22,5 @@ treePrints: IO ()
 treePrints = do
   print aTreeOut
   putStrLn "hi"
+
+main = treePrints
