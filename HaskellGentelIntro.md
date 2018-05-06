@@ -147,7 +147,7 @@ System F, as well as having subclassing, I imagine they must go beyond HM and pl
 here. 
 
 
-## Type Aliases
+## Type Synonyms
 
 In Haskell:
 
@@ -174,3 +174,27 @@ declarations in the order of use as well, which seems
 to be a bit of a dowside to Idris as this introduced a bit
 of cognitive overhead, but may have other limitations as well
 when it comes to lazy data structures (we will see!).
+
+## Built-in Types Are Not Special
+
+One comment I noticed from this section, pertaining to running
+scripts:  Idris is more strict in that it appears to not
+allow shadowing. Haskell allows:
+
+```haskell
+a:: Int 
+a = 3
+data MyList a               = Nil | Cons a (MyList a) 
+```
+
+Wheras Idris will complain with `a is bound as an implicit`, 
+and I need to use a different type argument:
+
+```idris
+a: Int 
+a = 3
+data MyList b               = Nil | Cons b (MyList b)
+```
+
+This seems to be less than ideal in Idris, since `a` is clearly
+a value in the first case and a `type` later on. Point for Haskell.

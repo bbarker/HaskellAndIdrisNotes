@@ -21,12 +21,12 @@ data Address {- Nested-}  = None | Addr String
 
 a:: Int 
 a = 3
-aa:: Int -- TODO: Try Integer
+aa:: Int
 aa = 3
-{- 
+-- Note that we can't compare Int and Integer:
+-- aa:: Integer would be a failure
 a_aa:: Bool
-a_aa = a == a_aa
--}
+a_aa = a == aa
 
 main = do
   putStrLn "hello"

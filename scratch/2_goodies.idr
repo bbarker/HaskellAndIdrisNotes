@@ -26,8 +26,15 @@ Person              = (Name,Address)
 
 a: Int 
 a = 3
-aa: Integer 
+aa: Int
 aa = 3
+-- Note that we can't compare Int and Integer:
+-- aa: Integer would be a failure
+a_aa: Bool
+a_aa = a == aa
+
+data MyList b               = Nil | Cons b (MyList b)
+
 
 main = do
   putStrLn "hello"
