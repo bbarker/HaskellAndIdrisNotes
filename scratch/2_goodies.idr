@@ -15,12 +15,20 @@ fringe (Branch left right) =  fringe left ++ fringe right
 aTree: Tree Int
 aTree = Branch (Branch (Leaf 10)(Leaf (-5))) (Leaf 3)
 
-aTreeOut: List Int
-aTreeOut = fringe aTree
+String: Type
+String              = List Char
+Name: Type
+Name                = String
+data Address {- Nested-} = None | Addr String
+Person: Type
+Person              = (Name,Address)
 
-treePrints: IO ()
-treePrints = do
-  print aTreeOut
-  putStrLn "hi"
 
-main = treePrints
+a: Int 
+a = 3
+aa: Integer 
+aa = 3
+
+main = do
+  putStrLn "hello"
+  print (fringe aTree)
