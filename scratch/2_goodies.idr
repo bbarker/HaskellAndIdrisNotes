@@ -24,7 +24,7 @@ Person: Type
 Person              = (Name,Address)
 
 
-a: Int 
+a: Int
 a = 3
 aa: Int
 aa = 3
@@ -35,7 +35,17 @@ a_aa = a == aa
 
 data MyList b               = Nil | Cons b (MyList b)
 
+-- myList: MyList 3
+
+{- -- TODO
+quicksort: List (Ord b) -> List (Ord b)
+quicksort  []           =  []
+quicksort (x::xs)       =  quicksort [y | y <- xs, y<x ]
+                        ++ [x]
+                        ++ quicksort [y | y <- xs, y>=x]   
+-}
 
 main = do
   putStrLn "hello"
+  printLn ([1..5])
   print (fringe aTree)

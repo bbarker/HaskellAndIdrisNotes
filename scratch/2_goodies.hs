@@ -28,6 +28,16 @@ aa = 3
 a_aa:: Bool
 a_aa = a == aa
 
+-- This is the closest I could get to 
+--
+data MyList a               = Nil | Cons a (MyList a) 
+
+quicksort  []           =  []
+quicksort (x:xs)        =  quicksort [y | y <- xs, y<x ]
+                        ++ [x]
+                        ++ quicksort [y | y <- xs, y>=x]
+
 main = do
   putStrLn "hello"
+  print ([1..5])
   print (fringe aTree)

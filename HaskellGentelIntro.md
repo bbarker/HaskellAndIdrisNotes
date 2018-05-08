@@ -187,7 +187,7 @@ a = 3
 data MyList a               = Nil | Cons a (MyList a) 
 ```
 
-Wheras Idris will complain with `a is bound as an implicit`, 
+Whereas Idris will complain with `a is bound as an implicit`, 
 and I need to use a different type argument:
 
 ```idris
@@ -196,5 +196,10 @@ a = 3
 data MyList b               = Nil | Cons b (MyList b)
 ```
 
-This seems to be less than ideal in Idris, since `a` is clearly
-a value in the first case and a `type` later on. Point for Haskell.
+This seems to be less than ideal in Idris at first glance, 
+since `a` is clearly a value in the first case and a `type` later on,
+but the reason is that `Idris` supports using values in types 
+(that is, dependant types). While it actually won't make a mistake in
+this case, since the type `MyList 3` makes no sense (apart from the
+obvious reasons, try defining `myList: MyList 3` versus 
+`myList: MyList Int`).
