@@ -37,15 +37,15 @@ data MyList b               = Nil | Cons b (MyList b)
 
 -- myList: MyList 3
 
-{- -- TODO
-quicksort: List (Ord b) -> List (Ord b)
+quicksort: Ord b => List b -> List b
 quicksort  []           =  []
 quicksort (x::xs)       =  quicksort [y | y <- xs, y<x ]
                         ++ [x]
                         ++ quicksort [y | y <- xs, y>=x]   
--}
 
 main = do
   putStrLn "hello"
   printLn ([1..5])
+  putStrLn (pack ['h', 'e', 'l', 'l', 'o'])
+  putStrLn $ pack ['h', 'e', 'l', 'l', 'o']
   print (fringe aTree)

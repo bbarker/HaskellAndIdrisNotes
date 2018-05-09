@@ -39,5 +39,6 @@ quicksort (x:xs)        =  quicksort [y | y <- xs, y<x ]
 
 main = do
   putStrLn "hello"
-  print ([1..5])
+  print [1..5]
+  putStrLn $ ['h', 'e', 'l', 'l', 'o']
   print (fringe aTree)
