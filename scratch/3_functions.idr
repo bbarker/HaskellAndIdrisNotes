@@ -14,7 +14,14 @@ infixr 10 ++~
 []     ++~ ys            =  ys
 (x::xs) ++~ ys           =  x :: (xs++~ys)
 
+add5: Int -> Int
+add5 y = (5+) y
+
+
 main = do
     printLn (mymap (+1) [1, 2, 3])
     printLn (myadd 3 5)
     printLn( [1, 2] ++~ [3, 4])
+    printLn(add5 3)
+    printLn(1 `elem` [1, 2, 3])
+
