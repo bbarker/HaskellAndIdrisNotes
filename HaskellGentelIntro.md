@@ -6,7 +6,10 @@ while comparing Idris and Haskell. Of course, Idris certainly has features
 that extend beyond Haskell, and the same may be said of Haskell and Idris; for the  former, we will likely not see very much due to this being a 
 book on Haskell, but the differences should still be instructive. 
 I may also comment on Scala, as it is the FP language I’m most familiar 
-with.
+with. 
+
+A more useful document for those already familiar with Haskell (which I also use as a reference):
+[Idris for Haskellers](https://github.com/idris-lang/Idris-dev/wiki/Idris-for-Haskellers).
 
 
 ## Basic REPL and syntax differences
