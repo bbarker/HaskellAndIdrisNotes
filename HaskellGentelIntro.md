@@ -206,3 +206,63 @@ but the reason is that `Idris` supports using values in types
 this case, since the type `MyList 3` makes no sense (apart from the
 obvious reasons, try defining `myList: MyList 3` versus 
 `myList: MyList Int`).
+
+## List Comprehensions and Arithmetic Sequences
+
+The naive quicksort for Idris is similar to Haskell, but with one important difference.
+Let's take a look.
+
+Haskell:
+
+```haskell
+quicksort  []           =  []
+quicksort (x:xs)        =  quicksort [y | y <- xs, y<x ]
+                        ++ [x]
+                        ++ quicksort [y | y <- xs, y>=x]
+```
+
+Idris:
+
+```idris
+quicksort: Ord b => List b -> List b
+quicksort  []           =  []
+quicksort (x::xs)       =  quicksort [y | y <- xs, y<x ]
+                        ++ [x]
+                        ++ quicksort [y | y <- xs, y>=x]
+```
+
+In Idris, type inference isn't powerful enough to infer the type here.
+
+
+# Functions
+
+## Lambda Abstractions
+
+Idris is like Haskell, but uses comma syntax for variable separation and a fat arrow (`=>`);
+
+Haskell:
+
+```haskell
+myadd :: Num a => a -> a -> a
+myadd = \x y -> x + y
+
+```
+
+Idris:
+
+```idris
+myadd : Num a => a -> a -> a
+myadd = \x, y => x + y
+```
+
+## Infix Operators
+
+In Idris, using an infix operator is similar to haskell, but the fixity and priority
+of the operator must be declared before use, e.g.:
+
+```idris
+infixr 10 ++~
+(++~)                    : List a -> List a -> List a
+[]     ++~ ys            =  ys
+(x::xs) ++~ ys           =  x :: (xs++~ys)
+```

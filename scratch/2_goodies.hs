@@ -32,10 +32,11 @@ a_aa = a == aa
 --
 data MyList a               = Nil | Cons a (MyList a) 
 
-quicksort  []           =  []
-quicksort (x:xs)        =  quicksort [y | y <- xs, y<x ]
-                        ++ [x]
-                        ++ quicksort [y | y <- xs, y>=x]
+--myquicksort:: Ord b => [b] -> [b]
+myquicksort  []           =  []
+myquicksort (x:xs)        =  myquicksort [y | y <- xs, y<x ]
+                          ++ [x]
+                          ++ myquicksort [y | y <- xs, y>=x]
 
 main = do
   putStrLn "hello"
