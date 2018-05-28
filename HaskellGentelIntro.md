@@ -257,7 +257,7 @@ myadd = \x, y => x + y
 
 ## Infix Operators
 
-In Idris, using an infix operator is similar to haskell, but the fixity and priority
+In Idris, using an infix operator is similar to Haskell, but the fixity and priority
 of the operator must be declared before use, e.g.:
 
 ```idris
@@ -266,3 +266,54 @@ infixr 10 ++~
 []     ++~ ys            =  ys
 (x::xs) ++~ ys           =  x :: (xs++~ys)
 ```
+
+## Functions are Non-strict
+
+This is a good time to read about [laziness in Idris](https://github.com/idris-lang/Idris-dev/wiki/Unofficial-FAQ#why-isnt-idris-lazy).
+
+## "Infinite" Data Structures
+
+There is an advantage for Haskell here, as is fairly well advertised,
+and as can be expected after reading the previous section. The following works
+in Haskell:
+
+```haskell
+ones = 1:ones
+-- ...
+print(head ones)
+
+```
+
+But the equivalent in Idris will cause a segmentation fault:
+
+```idris
+ones: List Int
+ones = 1 :: ones
+-- ...
+printLn(head ones) -- seg fault!
+```
+
+
+```
+   |
+37 |     printLn(head ones) -- seg fault!
+   |             ~~~~~~~~~
+When checking right hand side of main with expected type
+        IO ()
+
+When checking argument ok to function Prelude.List.head:
+        Can't find a value of type
+                NonEmpty ones                                                                                                         
+```
+
+The error message is not entirely clear, but we basically know what we
+are doing wrong. The Idris tutorial 
+[explains](http://docs.idris-lang.org/en/latest/tutorial/typesfuns.html)
+that codata types, in particular `Stream`, can be used to avoid the issue.
+In short, we just write `ones: Stream Int` instead of `ones: List Int`.
+But, this is still something of a win for Haskell, or at least a tradeoff
+of safety for (possible) performance benefits in Idris, since we can still
+construct infinite `List` types (despite the claim in the prior section to
+the contrary that "in a total language [e.g. Idris] we don't have undefined 
+and  non-terminating terms").
+
