@@ -18,6 +18,10 @@ const5:: a -> Int
 const5 x = 5
 
 ones = 1:ones
+twos = map (2*) ones
+
+myerr:: Int
+myerr = error "foo"
 
 main = do
     print (mymap (+1) [1, 2, 3])
@@ -29,3 +33,5 @@ main = do
     print(const5 (1.0/0.0))
     print((1/0))
     print(head ones)
+    print(take 2 twos)
+    print(myerr)

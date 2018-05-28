@@ -317,3 +317,33 @@ construct infinite `List` types (despite the claim in the prior section to
 the contrary that "in a total language [e.g. Idris] we don't have undefined 
 and  non-terminating terms").
 
+## The Error Function
+
+In Idris, in order to use the `error function`, we have to use 
+[ElabReflection](http://docs.idris-lang.org/en/latest/reference/elaborator-reflection.html#elaborator-reflection), e.g.:
+
+```idris
+module Main
+import Debug.Error
+
+%language ElabReflection
+main: IO ()
+
+-- ...
+
+myerr: Int
+myerr = error "foo"
+
+-- ...
+
+main = do 
+    printLn(myerr)
+
+```
+
+### TODO: Exception effects
+
+I suspect [exceptions](http://docs.idris-lang.org/en/latest/effects/simpleeff.html#exceptions)
+may be a better way to deal with errors in Idris, but haven't looked into this at all.
+
+

@@ -1,5 +1,9 @@
 module Main
+import Debug.Error
+
+%language ElabReflection
 main: IO ()
+
 
 
 mymap           : (a->b) -> List a -> List b
@@ -23,6 +27,12 @@ const5 x = 5
 -- ones: List Int
 ones: Stream Int
 ones = 1::ones
+twos: Stream Int
+twos = map (2*) ones
+
+myerr: Int
+myerr = error "foo"
+
 
 main = do
     printLn (mymap (+1) [1, 2, 3])
@@ -36,6 +46,8 @@ main = do
     printLn((1.0/0.0))
     printLn(const5 (head ones))
     printLn(head ones) -- seg fault if List instead of Stream
+    printLn(take 2 twos)
+    printLn(myerr)
 
 
 
