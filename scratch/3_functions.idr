@@ -2,6 +2,7 @@ module Main
 import Debug.Error
 
 %language ElabReflection
+%default total
 main: IO ()
 
 

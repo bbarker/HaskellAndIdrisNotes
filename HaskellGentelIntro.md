@@ -232,6 +232,10 @@ quicksort (x::xs)       =  quicksort [y | y <- xs, y<x ]
 ```
 
 In Idris, type inference isn't powerful enough to infer the type here.
+A side note is that this allows you to ignore, for now, the need to specify
+the type class `Ord` for type parameter `b`. To understand how this is
+required by Idris and Haskell (as it should be), take a look at
+[monad comprehensions](http://docs.idris-lang.org/en/latest/tutorial/interfaces.html#monad-comprehensions).
 
 
 # Functions
@@ -316,6 +320,10 @@ of safety for (possible) performance benefits in Idris, since we can still
 construct infinite `List` types (despite the claim in the prior section to
 the contrary that "in a total language [e.g. Idris] we don't have undefined 
 and  non-terminating terms").
+
+However, there is a way to avoid this in Idris: you can 
+[require it](https://stackoverflow.com/questions/50558591/does-idris-have-non-terminating-terms) 
+to be a total language by setting `%default total`.
 
 ## The Error Function
 
