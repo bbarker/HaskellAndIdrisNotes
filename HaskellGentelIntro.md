@@ -355,3 +355,8 @@ I suspect [exceptions](http://docs.idris-lang.org/en/latest/effects/simpleeff.ht
 may be a better way to deal with errors in Idris, but haven't looked into this at all.
 
 
+# Case Expressions and Pattern Matching
+
+One thing to note in this section is that Idris 
+[doesn't support](http://docs.idris-lang.org/en/v1.3.0/faq/faq.html#why-does-idris-use-double-instead-of-float64) 
+32 bit floats at present, so use `Double` instead of `Float`.
