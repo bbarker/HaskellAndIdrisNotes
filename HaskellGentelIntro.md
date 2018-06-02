@@ -360,3 +360,18 @@ may be a better way to deal with errors in Idris, but haven't looked into this a
 One thing to note in this section is that Idris 
 [doesn't support](http://docs.idris-lang.org/en/v1.3.0/faq/faq.html#why-does-idris-use-double-instead-of-float64) 
 32 bit floats at present, so use `Double` instead of `Float`.
+
+As usual, Idris doesn't infer types as well as Haskell or Scala, 
+so in the `contrived` example, whereas the call for Haskell looks like this,
+
+```haskell
+contrived([],  'b',  (1,   2.0),   "hi",   True)
+```
+
+Idris requires [some method](https://stackoverflow.com/questions/50604648/how-to-do-basic-pattern-matching-with-formal-parameters-value-binding-in-idris) 
+for ascribing a type, e.g.:
+
+
+```idris
+contrived {a = Nat} ([],  'b',  (1,   2.0),   "hi",   True)
+```
