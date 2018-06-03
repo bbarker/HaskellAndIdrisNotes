@@ -405,3 +405,5 @@ mytake {a = Nat} ?undefined []
 It becomes apparent here that the `{a = Type}` syntax in Idris is quite handy when
 having multiple function arguments that have the same type parameter `a`.
 
+Since Idris [isn't lazy](https://github.com/idris-lang/Idris-dev/wiki/Unofficial-FAQ#why-isnt-idris-lazy),
+however, all of the above function calls will give a runtime error in Idris.
