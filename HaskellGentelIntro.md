@@ -375,3 +375,33 @@ for ascribing a type, e.g.:
 ```idris
 contrived {a = Nat} ([],  'b',  (1,   2.0),   "hi",   True)
 ```
+
+Sometimes ascribing a type to `[]` appears to be necessary in Haskell as well; this can be done
+like `([]::[Int])` (the equivalent syntax doesn't appear to be supported in Idris). We will
+need this in the next section.
+
+## Pattern-Matching Semantics: An Example
+
+In Haskell, to actually get the `take` (renamed `mytake`) and `take1` examples to call,
+we have to use a value of type `_|_`, which we could easily define by throwing an error
+from a function value, but Haskell [provides](https://wiki.haskell.org/Bottom) 
+`undefined` for this:
+
+```haskell
+mytake 0 (undefined::[Int])
+take1  0 (undefined::[Int]) -- runtime error
+mytake (undefined::Integer) ([]::[Int]) -- runtime error
+take1  (undefined::Integer) ([]::[Int])
+```
+
+In Idris, there is no `undefined` defined, but Idris has the more robust notion of
+[holes](http://docs.idris-lang.org/en/latest/tutorial/typesfuns.html#holes), and
+we can simply use `?undefined`, for example:
+
+```idris
+mytake {a = Nat} ?undefined [] 
+```
+
+It becomes apparent here that the `{a = Type}` syntax in Idris is quite handy when
+having multiple function arguments that have the same type parameter `a`.
+
