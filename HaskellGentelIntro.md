@@ -5,7 +5,7 @@ to Haskell, Version 98](https://www.haskell.org/tutorial/index.html),
 while comparing Idris and Haskell. Of course, Idris certainly has features 
 that extend beyond Haskell, and the same may be said of Haskell and Idris; for the  former, we will likely not see very much due to this being a 
 book on Haskell, but the differences should still be instructive. 
-I may also comment on Scala, as it is the FP language I’m most familiar 
+I may also comment on Scala, as it is the FP language I'm most familiar 
 with. 
 
 A more useful document for those already familiar with Haskell (which I also use as a reference):
@@ -406,4 +406,11 @@ It becomes apparent here that the `{a = Type}` syntax in Idris is quite handy wh
 having multiple function arguments that have the same type parameter `a`.
 
 Since Idris [isn't lazy](https://github.com/idris-lang/Idris-dev/wiki/Unofficial-FAQ#why-isnt-idris-lazy),
-however, all of the above function calls will give a runtime error in Idris.
+however, all of the above function calls will give a runtime error in Idris. There is a potential
+way to get around this using `Lazy (List a)` as input to `mytake`, but this currently
+generates a [compiler error](https://github.com/idris-lang/Idris-dev/issues/4131).
+
+
+## Case Expressions
+
+Idris uses `=>` in case expressions (like Scala), whereas Haskell uses `->`.

@@ -18,6 +18,22 @@ take1  _     []         =  []
 take1  0     _          =  []
 take1  n    (x:xs)      =  x : take1 (n-1) xs
 
+--casetake :: Integer -> [a] -> [a]
+casetake m ys = case (m, ys) of
+                  (0, _)        -> []
+                  (_, [])       -> []
+                  (n, x:xs)     -> x : casetake (n-1) xs
+
+
+iffer :: Bool -> a -> a -> a
+iffer cond v1 v2 = case cond of
+                     True -> v1
+                     False -> v2
+
+
+
+
+
 main = do
   print( contrived([],  'b',  (1,   2.0),   "hi",   True) )
   print( contrived([],  'b',  (1,   2.0),   "bye",  True) )
@@ -28,5 +44,15 @@ main = do
   print( mytake 0 (undefined::[Int]) )
   -- print( take1  0 (undefined::[Int]) ) -- runtime error
   -- print( mytake (undefined::Integer) ([]::[Int]) ) -- runtime error
-  print( take1  (undefined::Integer) ([]::[Int]) )
+  print( take1  (undefined::Integer) ([]::[Int]) ) -- runtime error: eager eval
+
+  print( casetake 3 [1,2,3,4])
+
+  print(iffer (1 < 2) 1 2)
+  print(iffer (2 < 1) 1 2)
+  print(if 1 < 2 then 1 else 2)
+  print(if 2 < 1 then 1 else 2)
+
+
+
 
