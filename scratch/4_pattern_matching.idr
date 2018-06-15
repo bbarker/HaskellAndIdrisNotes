@@ -46,6 +46,9 @@ mutual
   reqsOut  = client 0 respsOut
   respsOut = server reqsOut
 
+fib: Stream Integer
+fib@(1::tfib) = 1 :: 1 :: [ a+b | (a,b) <- zip fib tfib]
+
 main = do
   printLn("hi")
   printLn( contrived {a = Nat} ([],  'b',  (1,   2.0),   "hi",   True) )
@@ -69,3 +72,4 @@ main = do
   printLn(if 2 < 1 then 1 else 2)
 
   printLn(take 5 reqsOut)
+  println(mytake 5 fib)

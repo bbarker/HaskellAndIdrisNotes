@@ -514,3 +514,13 @@ An important point that we've realized a bit ahead of time thanks to needing to 
 in certain contexts, indentation does matter, such as in `do` blocks, which we did already
 see as part of our `main` `do` block, but this may have been overlooked as a stylistic effect only.
 It is not just for `style`.
+
+
+It appears that pattern binding at the value definition level does not work in Idris, e.g. the
+following Haskell program, when converted to Idris, will fail to parse:
+
+```haskell
+fib@(1:tfib)    = 1 : 1 : [ a+b | (a,b) <- zip fib tfib ]
+```
+
+## Lexical Scoping and Nested Forms

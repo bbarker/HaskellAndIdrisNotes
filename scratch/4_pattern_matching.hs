@@ -36,6 +36,7 @@ process req = req+1
 reqs  = client 0 resps
 resps = server reqs
 
+fib@(1:tfib)    = 1 : 1 : [ a+b | (a,b) <- zip fib tfib ]
 
 main = do
   print( contrived([],  'b',  (1,   2.0),   "hi",   True) )
@@ -56,6 +57,7 @@ main = do
   print(if 1 < 2 then 1 else 2)
   print(if 2 < 1 then 1 else 2)
   print(mytake 5 reqs)
+  print(mytake 5 fib)
 
 
 
