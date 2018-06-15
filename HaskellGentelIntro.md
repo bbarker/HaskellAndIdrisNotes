@@ -312,7 +312,7 @@ When checking argument ok to function Prelude.List.head:
 
 The error message is not entirely clear, but we basically know what we
 are doing wrong. The Idris tutorial 
-[explains](http://docs.idris-lang.org/en/latest/tutorial/typesfuns.html)
+[explains](http://docs.idris-lang.org/en/latest/tutorial/typesfuns.html#codata-types)
 that codata types, in particular `Stream`, can be used to avoid the issue.
 In short, we just write `ones: Stream Int` instead of `ones: List Int`.
 But, this is still something of a win for Haskell, or at least a tradeoff
@@ -414,3 +414,103 @@ generates a [compiler error](https://github.com/idris-lang/Idris-dev/issues/4131
 ## Case Expressions
 
 Idris uses `=>` in case expressions (like Scala), whereas Haskell uses `->`.
+
+## Lazy Patterns
+
+Idris doesn't have lazy pattern matching; function arguments get evaluated upon
+call. We could make the second argument to `client` lazy by changing the type from
+`Stream Int` to `Lazy (Stream Int)`, but, the stream being split (`::`) causes
+evaluation of the `respOut`, which unfortunately, hasn't been defined upon
+the call to `client`. To avoid this we need to get rid of the split. So instead of writing
+
+```idris
+client initreq (resp :: resps) = initreq :: client resp resps
+```
+
+we write:
+
+```idris
+client initreq resps = initreq :: client (head resps) (tail resps)
+```
+
+Now this seems very familiar; it was identical to the initial solution proposed by
+**AGItH**:
+
+```haskell
+client init resps         = init : client (next (head resps)) (tail resps)
+```
+
+So what happens if we remove `Lazy` from `Lazy (Stream Int)`? After all, if like me,
+you might be thinking _but isn't `Stream` already lazy?_ Well, the bad news is that
+we still get a segmentation fault. We need to recall that `Stream` is only lazy in
+its tail - the head of Stream will still be evaluated when passed into the client
+function. Stream's definition is just:
+
+```idris
+data Stream : Type -> Type where
+(::) : (value : elem) -> Inf (Stream elem) -> Stream elem
+```
+
+We can see that cons (`::`) has two parameters, and the first (the head) does not
+have `Inf` applied. Going into more detail for [codata typs](http://docs.idris-lang.org/en/latest/tutorial/typesfuns.html#codata-types) (which was mentioned earlier
+when introducing `Stream`), `Inf` is what actually makes the value lazy in Idris.
+
+So we might now wonder: do we really need Stream at all? If we try we get the error:
+
+```
+   |
+10 | client initreq resps = initreq :: client (head resps) (tail resps)
+   |                                           ~~~~~~~~~~
+When checking right hand side of client with expected type
+	List Int
+
+When checking argument ok to function Prelude.List.head:
+	Can't find a value of type
+		NonEmpty (Force resps)
+```
+
+
+
+Ah, `resps` is evaluated, and even though it is lazy upon function call thanks to 
+`Lazy`, the data type itself is _not_ lazy. In the Idris tutorial it is stated:
+
+>A value of type `Lazy a` is unevaluated until it is forced by `Force`.
+
+And, clearly, `head resps` is empty when `client` is first called on (on `respsOut`).
+So we can see that we still need a `Stream`. `Lazy` seems to be interchangeable with
+`Inf` in this context. Apparently, the difference stems from how `Lazy` 
+[can be erased](https://stackoverflow.com/questions/48236700/why-not-always-use-inf-instead-of-lazy-in-idris)
+during totality checking. However, Idris still can not prove the program is total as written
+if we add `%default total` with `Lazy`. Likely, more advanced methods are needed from
+Idris to show this.
+
+So we can see that we can still achieve laziness in `Idris`, but it is not as simple,
+and it is more verbose. Point for Haskell, perhaps, though again, the entire reason
+Idris is eagerly evaluated is to be able to have more 
+[stable performance characteristics](http://docs.idris-lang.org/en/latest/faq/faq.html#why-does-idris-use-eager-evaluation-rather-than-lazy) allowing lower level
+code to be written. We might think of Haskell as being somewhere closer to Java, 
+whereas Idris would be closer to C, though not as close as [ATS](http://www.ats-lang.org/),
+which shares identical semantics to C.
+
+Enough digression; the complete solution [credit](https://stackoverflow.com/questions/50785672/how-does-one-use-mutually-defined-streams-in-idris)
+looks like:
+
+```idris
+process: Int -> Int
+process req = req+1
+server: Stream Int -> Stream Int
+server (req :: reqs)            = process req :: server reqs
+client: Int -> Lazy (Stream Int) -> Stream Int
+client initreq resps = initreq :: client (head resps) (tail resps)
+mutual
+  reqsOut: Stream Int
+  respsOut: Stream Int
+  reqsOut  = client 0 respsOut
+  respsOut = server reqsOut
+```
+
+An important point that we've realized a bit ahead of time thanks to needing to use
+ `mutual` in Idris is [indentation blocks](https://en.wikibooks.org/wiki/Haskell/Indentation):
+in certain contexts, indentation does matter, such as in `do` blocks, which we did already
+see as part of our `main` `do` block, but this may have been overlooked as a stylistic effect only.
+It is not just for `style`.

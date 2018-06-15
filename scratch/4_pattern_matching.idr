@@ -2,7 +2,7 @@ module Main
 import Debug.Error
 
 -- %language ElabReflection
--- %default total -- casetake is not proved total as implemented
+-- %default total -- casetake and client/server not proved total as implemented
 main: IO ()
 
 
@@ -34,6 +34,17 @@ iffer : Bool -> a -> a -> a
 iffer cond v1 v2 = case cond of
                      True => v1
                      False => v2
+process: Int -> Int
+process req = req+1
+server: Stream Int -> Stream Int
+server (req :: reqs)            = process req :: server reqs
+client: Int -> Lazy (Stream Int) -> Stream Int
+client initreq resps = initreq :: client (head resps) (tail resps)
+mutual
+  reqsOut: Stream Int
+  respsOut: Stream Int
+  reqsOut  = client 0 respsOut
+  respsOut = server reqsOut
 
 main = do
   printLn("hi")
@@ -56,3 +67,5 @@ main = do
   printLn(iffer (2 < 1) 1 2)
   printLn(if 1 < 2 then 1 else 2)
   printLn(if 2 < 1 then 1 else 2)
+
+  printLn(take 5 reqsOut)

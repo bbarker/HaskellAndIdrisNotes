@@ -30,8 +30,11 @@ iffer cond v1 v2 = case cond of
                      True -> v1
                      False -> v2
 
-
-
+server (req:reqs)            = process req : server reqs
+client initreq ~(resp:resps) = initreq : client resp resps
+process req = req+1
+reqs  = client 0 resps
+resps = server reqs
 
 
 main = do
@@ -52,6 +55,7 @@ main = do
   print(iffer (2 < 1) 1 2)
   print(if 1 < 2 then 1 else 2)
   print(if 2 < 1 then 1 else 2)
+  print(mytake 5 reqs)
 
 
 
