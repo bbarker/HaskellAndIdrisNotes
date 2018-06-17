@@ -380,6 +380,31 @@ Sometimes ascribing a type to `[]` appears to be necessary in Haskell as well; t
 like `([]::[Int])` (the equivalent syntax doesn't appear to be supported in Idris). We will
 need this in the next section.
 
+## Pattern-Matching Semantics
+
+I didn't notice the `sign` example didn't work in Idris on the first pass, so 
+see additional discussion below in 
+[Lexical Scoping and Nested Forms](#lexical-scoping-and-nested-forms).
+
+But briefly we need to use `with` in Idris (or a combination of `let` and `case`). 
+Here is the Haskell example:
+
+```haskell
+mysign x |  x >  0        =   1
+         |  x == 0        =   0
+         |  x <  0        =  -1
+```
+
+And here is a working Idris equivalent:
+
+```idris
+mysign: Integer -> Integer
+mysign x with (x > 0, x < 0)
+ |  (True, _)       =   1
+ |  (_, True)       =  -1
+ |  (False, False)  =   0
+```
+
 ## Pattern-Matching Semantics: An Example
 
 In Haskell, to actually get the `take` (renamed `mytake`) and `take1` examples to call,
@@ -524,3 +549,58 @@ fib@(1:tfib)    = 1 : 1 : [ a+b | (a,b) <- zip fib tfib ]
 ```
 
 ## Lexical Scoping and Nested Forms
+
+The 'let' keyword appears to be identical in Haskell and Idris, as `where` appears to
+at first glance, but in Idris the values defined in a `where` clause only apply to 
+one of the function expressions in a function defined using pattern matching. For instance,
+in Haskell, we can write:
+
+```haskell
+dubOrTripSq y | x > 2  = 2 * x
+              | x <= 2 = 3 * x
+            where x = y * y
+```
+
+But in Idris this is:
+
+```idris
+dubOrTripSq: Int -> Int
+dubOrTripSq (y) with (y*y > 2)
+  | True  = 2 * x where
+    x: Int
+    x = y * y
+  | False = 3 * x where
+    x: Int
+    x = y * y
+
+```
+
+Obviously the code duplication is not ideal, can can be gotten around in Idris by doing
+(for instance) `let` combined with `case`:
+
+```idris
+dubOrTripSq: Int -> Int
+dubOrTripSq (y) =
+  let x = y * y
+  in case (x > 2) of
+    True  => 2 * x
+    False => 3 * x
+```
+
+
+
+The `where` example covered exposed some difference in syntax and features between the two
+languages. While Haskell has `|` guards, Idris has `with`, which appears to be more
+flexible in that it supports Idris's dependant types (not covered here), but also
+less flexible in that you can only pattern match on a single intermediate value
+([ref](https://stackoverflow.com/questions/24981234/is-it-possible-to-use-guards-in-function-definition-in-idris)), 
+whereas with guards you can check some arbitrary number of values,
+and the first to match will be applied. While rigorous and convenient, I suppose
+the Haskell approach could also more easily lead to logic errors when the programmer
+doesn't consider possible overlap between the different guard values being
+matched against. And of course, one could always uses tuples or other aggregate
+data types in Idris.
+
+
+Note that earlier we did discuss another form of guard (`|`) that is supported by Idris,
+but this works in the context of `Applicative` functors.

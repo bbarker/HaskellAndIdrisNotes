@@ -4,6 +4,10 @@ contrived :: ([a], Char, (Int, Float), String, Bool) -> Bool
 contrived    ([],  'b',  (1,   2.0),   "hi",   True) = False
 contrived    (a,  b,  c,   d,  e) = True
 
+mysign x |  x >  0        =   1
+         |  x == 0        =   0
+         |  x <  0        =  -1
+
 growHead :: [a] -> [a]
 growHead nnl@(x:_) = x:nnl
 growHead ([]) = []
@@ -38,9 +42,19 @@ resps = server reqs
 
 fib@(1:tfib)    = 1 : 1 : [ a+b | (a,b) <- zip fib tfib ]
 
+apb = let a = 5
+          b = 6
+      in  a + b
+
+--dubOrTripSq:: Int -> Int
+dubOrTripSq y | x > 2  = 2 * x
+              | x <= 2 = 3 * x
+            where x = y * y
+
 main = do
   print( contrived([],  'b',  (1,   2.0),   "hi",   True) )
   print( contrived([],  'b',  (1,   2.0),   "bye",  True) )
+  print( map mysign [-5, 0, 5] )
   print( growHead([1,2,3]) )
 
   print( mytake 0 ([]::[Int]) )
@@ -58,6 +72,7 @@ main = do
   print(if 2 < 1 then 1 else 2)
   print(mytake 5 reqs)
   print(mytake 5 fib)
+  print([ dubOrTripSq 1, dubOrTripSq 2])
 
 
 
