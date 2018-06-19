@@ -550,8 +550,64 @@ fib@(1:tfib)    = 1 : 1 : [ a+b | (a,b) <- zip fib tfib ]
 
 ## Lexical Scoping and Nested Forms
 
-The 'let' keyword appears to be identical in Haskell and Idris, as `where` appears to
-at first glance, but in Idris the values defined in a `where` clause only apply to 
+### Let Expressions
+
+
+One issue that came up was converting the following Haskell code to Idris:
+
+```haskell
+a = 2
+b = 5
+c = 3
+d = 1
+
+f1 = let y   = a*b
+         f x = (x+y)/y
+     in f c + f d
+
+```
+
+In Idris, this ends up being a fair bit more verbose because we have to: 
+
+1. Specify types of the input values, as usual
+2  Specify types of values declared in the `let` expression in an unusual way
+3. For function values, we must seemingly use lambda functions (related to **2** above)
+4. We need to use `cast` to convert from Int to Double, which is implicitly used in Haskell.
+
+```idris
+
+a: Int
+b: Int
+c: Int
+d: Int
+f1: Double
+
+a = 2
+b = 5
+c = 3
+d = 1
+
+f1 = let y: Int = a*b
+         f: (Int -> Double) = (\ x => (cast(x+y))/(cast y))
+     in f c + f d
+
+```
+
+This slightly unusual method is actually rather familiar in Scala
+(and many other languages): we put the type and the value assignment
+on the same line; we can'd do this in Haskell: `foo:: Int = 3`, but in
+Idris, it is possible to do `foo: Int = 3`.
+
+One final (minor) note that is worth mentioning is that there seems to be difference
+in precision (or more likely, in display) when printing the `Double` 
+value `f1`. In Haskell we get `2.4000000000000004`, in Idris 
+it is just displayed as `2.4`.
+
+
+### Where Clauses
+
+The `where` keyword appears to be similar to Haskell at first glance, but has an
+important difference in Idris: the values defined in a `where` clause only apply to 
 one of the function expressions in a function defined using pattern matching. For instance,
 in Haskell, we can write:
 
@@ -604,3 +660,9 @@ data types in Idris.
 
 Note that earlier we did discuss another form of guard (`|`) that is supported by Idris,
 but this works in the context of `Applicative` functors.
+
+## Layout
+
+The topic of this section at least appears to be much the same between Haskell and Idris,
+though it is possible differences between the two may exist (I haven't checked in detail
+as yet). 

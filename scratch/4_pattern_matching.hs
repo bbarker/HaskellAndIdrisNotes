@@ -51,6 +51,20 @@ dubOrTripSq y | x > 2  = 2 * x
               | x <= 2 = 3 * x
             where x = y * y
 
+
+a = 2
+b = 5
+c = 3
+d = 1
+
+f1 = let y   = a*b
+         f x = (x+y)/y
+     in f c + f d
+
+f2 = let { y   = a*b; f x = (x+y)/y}
+     in f c + f d
+
+
 main = do
   print( contrived([],  'b',  (1,   2.0),   "hi",   True) )
   print( contrived([],  'b',  (1,   2.0),   "bye",  True) )
@@ -73,6 +87,7 @@ main = do
   print(mytake 5 reqs)
   print(mytake 5 fib)
   print([ dubOrTripSq 1, dubOrTripSq 2])
+  print([f1, f2])
 
 
 

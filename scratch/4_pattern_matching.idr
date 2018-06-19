@@ -77,6 +77,27 @@ dubOrTripSq (y) =
     True  => 2 * x
     False => 3 * x
 
+a: Int
+b: Int
+c: Int
+d: Int
+f1: Double
+
+a = 2
+b = 5
+c = 3
+d = 1
+
+
+
+f1 = let y: Int = a*b
+         f: (Int -> Double) = (\ x => (cast(x+y))/(cast y))
+     in f c + f d
+
+f2: Double
+f2 = let { y: Int = a*b; f: (Int -> Double) = (\ x => (cast(x+y))/(cast y))}
+     in f c + f d
+
 
 main = do
   printLn("hi")
@@ -104,3 +125,4 @@ main = do
   printLn(take 5 reqsOut)
   --println(mytake 5 fib)
   printLn([ dubOrTripSq 1, dubOrTripSq 2])
+  printLn([f1, f2])
