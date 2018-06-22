@@ -666,3 +666,27 @@ but this works in the context of `Applicative` functors.
 The topic of this section at least appears to be much the same between Haskell and Idris,
 though it is possible differences between the two may exist (I haven't checked in detail
 as yet). 
+
+# Type Classes and Overloading
+
+For using functions at infix position, Idris and Haskell are the same, but Idris 
+doesn't allow you to define functions at infix position. In Haskell:
+
+```haskell
+x `myelem` []     = False
+x `myelem` (y:ys) = x == y || (x `myelem` ys)
+-- ...
+print(myelem 1 [2, 1, 3])
+print(4 `myelem` [2, 1, 3])
+```
+ 
+ And in Idris:
+ 
+ ```idris
+myelem: (Eq a) => a -> List a -> Bool
+myelem x []     = False
+myelem x (y::ys) = x == y || (myelem x ys) 
+-- ...
+printLn(1 `myelem` [2, 1, 3])
+printLn(myelem 4 [2, 1, 3]) 
+ ```
